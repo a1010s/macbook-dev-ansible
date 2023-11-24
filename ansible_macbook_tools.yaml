@@ -1,0 +1,119 @@
+- name: Install Tools on macOS and Configure Shell for kubectl
+  hosts: localhost
+  gather_facts: true
+
+  vars_files:
+    - vars.yaml
+
+  tasks:
+    - name: Check if Homebrew is installed
+      stat:
+        path: /usr/local/bin/brew
+      register: homebrew_installed
+
+    - name: Install Homebrew if not installed
+      become: yes
+      command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists
+    
+    - name: Update Homebrew
+      community.general.homebrew:
+        state: latest
+      when: homebrew_installed.stat.exists
+      register: homebrew_update_result
+
+    - name: Debug Homebrew Update
+      ansible.builtin.debug:
+        var: homebrew_update_result
+      when: homebrew_installed.stat.exists
+
+    - name: Install iTerm2
+      community.general.homebrew:
+        name: iterm2
+        state: present
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Install Docker 
+      community.general.homebrew:
+        name: homebrew/cask/docker
+        state: present
+      when: homebrew_installed.stat.exists
+      ignore_errors: yes
+
+    - name: Start Docker daemon on macOS
+      ansible.builtin.command: "open --background -a Docker"
+      when: ansible_os_family == "Darwin" and not skip_docker_start|default(false)
+      ignore_errors: yes
+
+    - name: Add Docker CLI to PATH
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: 'export PATH="/usr/local/opt/docker/bin:$PATH"'
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+
+    - name: Install Homebrew packages
+      community.general.homebrew:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ brew_packages }}"
+      when: homebrew_installed.stat.exists
+    
+    - name: Download Go package
+      get_url:
+        url: "{{ golang_url }}"
+        dest: "/tmp/go1.21.4.darwin-amd64.pkg"
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Download and extract kubecolor binary
+      ansible.builtin.get_url:
+        url: "{{ kubecolor_url }}"
+        dest: "/tmp/kubecolor.tar.gz"
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Extract kubecolor binary
+      ansible.builtin.command: "tar -zxvf /tmp/kubecolor.tar.gz -C {{ install_dir }}"
+      args:
+        executable: /bin/bash
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Add execute permissions to kubecolor binary
+      ansible.builtin.file:
+        path: "{{ install_dir }}/kubecolor"
+        mode: '+x'
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Add Go binaries to PATH
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: 'export PATH=$PATH:/usr/local/go/bin'
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Create ~/.zshrc if it doesn't exist
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        state: touch
+
+    - name: Add KUBECONFIG export to zsh profile
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: 'export KUBECONFIG="{{ ansible_env.HOME }}/.kube/kubeconfig.yaml"'
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Add kubectl alias to zsh profile
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: 'alias k=kubectl'
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Debug Info
+      ansible.builtin.debug:
+        msg: "SHELL: {{ ansible_shell_executable }} - OS: {{ ansible_os_family }} - HOME: {{ ansible_env.HOME }}"
+
+    - name: Reload zsh profile
+      ansible.builtin.shell: "source ~/.zshrc && kubectl get pods"
+      args:
+        executable: /bin/zsh
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+    
+    

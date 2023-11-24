@@ -1,0 +1,17 @@
+# vars.yml
+
+brew_packages:
+  - wget
+  - btop
+  - kubectl
+  - k9s
+  #- iterm2
+  #- bash-completion
+  #- docker
+  #- visual-studio-code
+
+golang_url: https://go.dev/dl/go1.21.4.darwin-amd64.pkg
+
+# NOTE: Check the right version for your CPU Architecture!
+kubecolor_url: https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Darwin_x86_64.tar.gz
+install_dir: /usr/local/bin
