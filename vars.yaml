@@ -5,8 +5,10 @@ brew_packages:
   - btop
   - kubectl
   - k9s
+  - iperf
+  #- speedtest
   #- iterm2
-  #- bash-completion
+  - bash-completion
   #- docker
   #- visual-studio-code
 

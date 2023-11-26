@@ -12,10 +12,11 @@
       register: homebrew_installed
 
     - name: Install Homebrew if not installed
-      become: yes
-      command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      shell: "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+      args:
+        chdir: /tmp
       when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists
-    
+
     - name: Update Homebrew
       community.general.homebrew:
         state: latest
@@ -27,12 +28,24 @@
         var: homebrew_update_result
       when: homebrew_installed.stat.exists
 
+
+    # NEED REBOOT:?
+    #- name: Set keyboard language to German
+    #  ansible.builtin.shell:
+    #    cmd: "sudo defaults write /Library/Preferences/com.apple.HIToolbox.plist AppleCurrentKeyboardLayoutInputSourceID -string com.apple.keylayout.German"
+    #  register: keyboard_setting
+
+    #- name: Check if setting was changed
+    #  ansible.builtin.debug:
+    #    var: keyboard_setting
+
+
     - name: Install iTerm2
       community.general.homebrew:
         name: iterm2
         state: present
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
-
+      ignore_errors: yes
     - name: Install Docker 
       community.general.homebrew:
         name: homebrew/cask/docker
