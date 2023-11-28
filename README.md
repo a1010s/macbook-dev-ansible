@@ -8,14 +8,15 @@ _NOTE ON INSTALLING ANSIBLE and the right PERMISIONS_
 ```bash
 $ cd ~
 $ find . | grep ansible | more
-<lines omitted>
+# find the ansible PATH
 ./Library/Python/3.9/bin/ansible
-<lines omitted>
+.
+.
 
-# From there, its pretty easy, just update your .bash_profile or .zshrc with
-
+# Update your .bash_profile or .zshrc:
 export PATH="/path/to/Library/Python/3.8/bin:$PATH"
 
+# Source and check:
 $ source ~/.zshrc
 $ ansible --version
 ansible 2.10.8
