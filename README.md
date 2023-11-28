@@ -3,7 +3,7 @@
 
 `Work in progress: need to install more tools`
 
-_NOTE ON INSTALLING ANSIBLE and the right PERMISIONS_
+### _NOTE ON INSTALLING ANSIBLE and the right PERMISIONS_
 
 ```bash
 $ cd ~
@@ -23,5 +23,5 @@ ansible 2.10.8
   config file = None
   configured module search path = ['/Users/dbove/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
 ```
-## Check the ownership of ~/.ansible directory:
+### Check the ownership of ~/.ansible directory:
 `ls -l ~/.ansible` => adjust to your user if needed. (ansible should run WITHOUT sudo)
