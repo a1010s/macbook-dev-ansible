@@ -27,6 +27,18 @@
       ansible.builtin.debug:
         var: homebrew_update_result
       when: homebrew_installed.stat.exists
+    
+    - name: Check if .zshrc exists
+      stat:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+      register: zshrc_exists
+
+    - name: Create .zshrc if it doesn't exist
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        state: touch
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists and not zshrc_exists.stat.exists
+
 
 
     # NEED REBOOT:?
