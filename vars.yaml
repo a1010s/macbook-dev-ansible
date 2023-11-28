@@ -6,12 +6,11 @@ brew_packages:
   - kubectl
   - k9s
   - iperf
-  #- speedtest
-  #- iterm2
+  - jq
   - bash-completion
-  #- docker
-  #- visual-studio-code
-
+  - docker
+  - visual-studio-code
+  - itemr2
 golang_url: https://go.dev/dl/go1.21.4.darwin-amd64.pkg
 
 # NOTE: Check the right version for your CPU Architecture!

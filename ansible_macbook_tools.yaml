@@ -40,18 +40,18 @@
     #    var: keyboard_setting
 
 
-    - name: Install iTerm2
-      community.general.homebrew:
-        name: iterm2
-        state: present
-      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
-      ignore_errors: yes
-    - name: Install Docker 
-      community.general.homebrew:
-        name: homebrew/cask/docker
-        state: present
-      when: homebrew_installed.stat.exists
-      ignore_errors: yes
+    #- name: Install iTerm2
+    #  community.general.homebrew:
+    #    name: iterm2
+    #    state: present
+    #  when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+    #  ignore_errors: yes
+    #- name: Install Docker 
+    #  community.general.homebrew:
+    #    name: homebrew/cask/docker
+    #    state: present
+    #  when: homebrew_installed.stat.exists
+    #  ignore_errors: yes
 
     - name: Start Docker daemon on macOS
       ansible.builtin.command: "open --background -a Docker"
