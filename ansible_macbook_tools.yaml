@@ -82,7 +82,7 @@
         name: "{{ item }}"
         state: present
       loop: "{{ brew_packages }}"
-      when: homebrew_installed.stat.exists
+      #when: homebrew_installed.stat.exists # THIS CONDITION WILL CAUSE TO SKIP!
     
     - name: Download Go package
       get_url:
