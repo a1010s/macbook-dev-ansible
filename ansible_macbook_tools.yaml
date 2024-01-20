@@ -16,6 +16,8 @@
       args:
         chdir: /tmp
       when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists
+      become: no 
+      ignore_errors: yes
 
     - name: Update Homebrew
       community.general.homebrew:
@@ -83,12 +85,13 @@
         state: present
       loop: "{{ brew_packages }}"
       #when: homebrew_installed.stat.exists # THIS CONDITION WILL CAUSE TO SKIP!
+      ignore_errors: yes
     
     - name: Download Go package
       get_url:
         url: "{{ golang_url }}"
         dest: "/tmp/go1.21.4.darwin-amd64.pkg"
-      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+      when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
     - name: Download and extract kubecolor binary
       ansible.builtin.get_url:
@@ -112,7 +115,7 @@
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshrc"
         line: 'export PATH=$PATH:/usr/local/go/bin'
-      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+      when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
     - name: Create ~/.zshrc if it doesn't exist
       ansible.builtin.file:
@@ -129,7 +132,7 @@
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshrc"
         line: 'alias k=kubectl'
-      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+      when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
     - name: Debug Info
       ansible.builtin.debug:
