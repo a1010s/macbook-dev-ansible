@@ -11,6 +11,8 @@ brew_packages:
   - docker
   - visual-studio-code
   - itemr2
+  - tree
+  - git
 golang_url: https://go.dev/dl/go1.21.4.darwin-amd64.pkg
 
 # NOTE: Check the right version for your CPU Architecture!
