@@ -11,12 +11,12 @@ brew_packages:
   - bash-completion
   - docker
   - visual-studio-code
-  - --cask iterm2
+  - iterm2
   - tree
   - git
   - fzf # cmdline finder tool
   - lens
-  - --cask drawio
+  - drawio
 golang_url: https://go.dev/dl/go1.21.4.darwin-amd64.pkg
 
 # NOTE: Check the right version for your CPU Architecture!
