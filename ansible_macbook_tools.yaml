@@ -15,8 +15,7 @@
       shell: "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
       args:
         chdir: /tmp
-      when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists
-      become: no 
+      when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists 
       ignore_errors: yes
 
     - name: Update Homebrew
@@ -77,6 +76,11 @@
         path: "{{ ansible_env.HOME }}/.zshrc"
         line: 'export PATH="/usr/local/opt/docker/bin:$PATH"'
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
+    - name: Install Azure Data Studio (--cask) 
+      community.general.homebrew_cask:
+        name: azure-data-studio
+        state: present
 
 
     - name: Install Homebrew packages

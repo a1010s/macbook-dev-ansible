@@ -5,6 +5,7 @@ brew_packages:
   - wget
   - btop
   - kubectl
+  - kubectx
   - k9s
   - iperf
   - jq
