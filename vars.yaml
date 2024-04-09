@@ -1,6 +1,7 @@
 # vars.yml
 
 brew_packages:
+  - azure-cli
   - wget
   - btop
   - kubectl
@@ -10,10 +11,12 @@ brew_packages:
   - bash-completion
   - docker
   - visual-studio-code
-  - itemr2
+  - --cask iterm2
   - tree
   - git
   - fzf # cmdline finder tool
+  - lens
+  - --cask drawio
 golang_url: https://go.dev/dl/go1.21.4.darwin-amd64.pkg
 
 # NOTE: Check the right version for your CPU Architecture!
