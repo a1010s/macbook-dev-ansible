@@ -40,32 +40,6 @@
         state: touch
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists and not zshrc_exists.stat.exists
 
-
-
-    # NEED REBOOT:?
-    #- name: Set keyboard language to German
-    #  ansible.builtin.shell:
-    #    cmd: "sudo defaults write /Library/Preferences/com.apple.HIToolbox.plist AppleCurrentKeyboardLayoutInputSourceID -string com.apple.keylayout.German"
-    #  register: keyboard_setting
-
-    #- name: Check if setting was changed
-    #  ansible.builtin.debug:
-    #    var: keyboard_setting
-
-
-    #- name: Install iTerm2
-    #  community.general.homebrew:
-    #    name: iterm2
-    #    state: present
-    #  when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
-    #  ignore_errors: yes
-    #- name: Install Docker 
-    #  community.general.homebrew:
-    #    name: homebrew/cask/docker
-    #    state: present
-    #  when: homebrew_installed.stat.exists
-    #  ignore_errors: yes
-
     - name: Start Docker daemon on macOS
       ansible.builtin.command: "open --background -a Docker"
       when: ansible_os_family == "Darwin" and not skip_docker_start|default(false)
@@ -77,11 +51,17 @@
         line: 'export PATH="/usr/local/opt/docker/bin:$PATH"'
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
 
+    # connect and query various databases, including SQL Server
+    #  Azure SQL Database, PostgreSQL, MySQL and more.
     - name: Install Azure Data Studio (--cask) 
       community.general.homebrew_cask:
         name: azure-data-studio
         state: present
 
+#    - name: Install iTerm2 
+#      community.general.homebrew_cask:
+#        name: iterm2
+#        state: present
 
     - name: Install Homebrew packages
       community.general.homebrew:
