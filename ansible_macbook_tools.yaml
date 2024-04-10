@@ -58,6 +58,11 @@
         name: azure-data-studio
         state: present
 
+    - name: Install Rectangle App (--cask) 
+      community.general.homebrew_cask:
+        name: rectangle
+        state: present
+
 #    - name: Install iTerm2 
 #      community.general.homebrew_cask:
 #        name: iterm2
@@ -76,6 +81,14 @@
         url: "{{ golang_url }}"
         dest: "/tmp/go1.21.4.darwin-amd64.pkg"
       when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
+
+    - name: Install Go Binary
+      ansible.builtin.command:
+        cmd: "installer -pkg /tmp/go1.21.4.darwin-amd64.pkg -target /"
+        creates: "/usr/local/go/bin/go"
+      ignore_errors: yes
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+
 
     - name: Download and extract kubecolor binary
       ansible.builtin.get_url:

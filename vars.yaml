@@ -18,7 +18,8 @@ brew_packages:
   - fzf # cmdline finder tool
   - lens
   - drawio
-golang_url: https://go.dev/dl/go1.21.4.darwin-amd64.pkg
+golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
+
 
 # NOTE: Check the right version for your CPU Architecture!
 kubecolor_url: https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Darwin_x86_64.tar.gz
