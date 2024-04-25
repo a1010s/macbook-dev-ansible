@@ -123,7 +123,7 @@
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshrc"
         line: 'export KUBECONFIG="{{ ansible_env.HOME }}/.kube/kubeconfig.yaml"'
-      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+      when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
     - name: Add kubectl alias to zsh profile
       ansible.builtin.lineinfile:
@@ -131,14 +131,28 @@
         line: 'alias k=kubectl'
       when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
+    # AUTOCOMPLETE ZSH 
+    - name: Create kubectl-autocomplete plugin directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/kubectl-autocomplete/"
+        state: directory
+      when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
+
+    - name: Install kubectl-autocomplete plugin
+      ansible.builtin.shell: "kubectl completion zsh > {{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/kubectl-autocomplete/kubectl-autocomplete.plugin.zsh"
+      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+   
+    - name: Add kubectl-autocomplete plugin to zshrc
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: 'plugins=(kubectl-autocomplete)'
+      when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
+
     - name: Debug Info
       ansible.builtin.debug:
         msg: "SHELL: {{ ansible_shell_executable }} - OS: {{ ansible_os_family }} - HOME: {{ ansible_env.HOME }}"
 
     - name: Reload zsh profile
-      ansible.builtin.shell: "source ~/.zshrc && kubectl get pods"
-      args:
-        executable: /bin/zsh
-      when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
+      ansible.builtin.shell: "source ~/.zshrc"
     
     
