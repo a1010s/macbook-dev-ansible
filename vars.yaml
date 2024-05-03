@@ -18,6 +18,7 @@ brew_packages:
   - fzf # cmdline finder tool
   - lens
   - drawio
+  - trivy
 golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
 
 
