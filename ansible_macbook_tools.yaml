@@ -40,6 +40,13 @@
         state: touch
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists and not zshrc_exists.stat.exists
 
+    - name: Copy .gitconfig file to home directory
+      ansible.builtin.copy:
+        src: "files/.gitconfig"
+        dest: "{{ ansible_env.HOME }}/.gitconfig"
+      tags: 
+        - gitconfig
+
     - name: Start Docker daemon on macOS
       ansible.builtin.command: "open --background -a Docker"
       when: ansible_os_family == "Darwin" and not skip_docker_start|default(false)

@@ -12,3 +12,19 @@ https://medium.com/@akhilesh-mishra/terraform-documentation-made-easy-with-terra
 - azure cli (also on the standard apps for ubuntu)
 
 python3-pip install 
+
+to only run a task or selected, need to tag the tasks like so:
+
+- name: Copy .gitconfig file to home directory
+      ansible.builtin.copy:
+        src: "files/.gitconfig"
+        dest: "{{ ansible_env.HOME }}/.gitconfig"
+      tags: 
+        - gitconfig
+
+then run:
+`ansible-playbook playbook.yaml --tags gitconfig`
+or skip tasks:
+`ansible-playbook playbook.yaml --skip-tags docker`
+
+
