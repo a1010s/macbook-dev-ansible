@@ -20,6 +20,7 @@ brew_packages:
   - drawio
   - trivy
   - diff-so-fancy
+  - ripgrep    # also needed for neovim find_grep functionality 
 golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
 
 

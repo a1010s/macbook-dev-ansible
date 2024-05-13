@@ -82,7 +82,8 @@
       loop: "{{ brew_packages }}"
       #when: homebrew_installed.stat.exists # THIS CONDITION WILL CAUSE TO SKIP!
       ignore_errors: yes
-    
+      tags:
+        - packages 
     - name: Download Go package
       get_url:
         url: "{{ golang_url }}"
