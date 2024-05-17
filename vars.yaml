@@ -18,9 +18,14 @@ brew_packages:
   - fzf # cmdline finder tool
   - lens
   - drawio
+  - figlet  # generate ASCII pictures: figlet AS DevOps
+  - lolcat # colorful output: figlet -f slant ANDREI STEGARU | lolcat
+
   - trivy
   - diff-so-fancy
   - ripgrep    # also needed for neovim find_grep functionality 
+  - neovim 
+  - picocom # uart connection tool
 golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
 
 
