@@ -18,7 +18,7 @@ brew_packages:
   - fzf # cmdline finder tool
   - lens
   - drawio
-  - figlet  # generate ASCII pictures: figlet AS DevOps
+  - figlet  # generate ASCII pictures: figlet AS DevOps.  Fonts: figlet -I2
   - lolcat # colorful output: figlet -f slant ANDREI STEGARU | lolcat
 
   - trivy
