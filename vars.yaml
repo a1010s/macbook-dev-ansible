@@ -20,12 +20,13 @@ brew_packages:
   - drawio
   - figlet  # generate ASCII pictures: figlet AS DevOps.  Fonts: figlet -I2
   - lolcat # colorful output: figlet -f slant ANDREI STEGARU | lolcat
-
+  - obsidian    # best documentation tool. ADD the nvim obsidian plugin for neovim!
   - trivy
   - diff-so-fancy
   - ripgrep    # also needed for neovim find_grep functionality 
   - neovim 
   - picocom # uart connection tool
+  - pwgen
 golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
 
 
