@@ -80,13 +80,13 @@
         name: node
         state: present
 
-    - name: Install yaml-language-server and prettier via npm
-      npm:
-        name: "{{ item }}"
-        global: yes
-      loop:
-        - yaml-language-server
-        - prettier
+    # - name: Install yaml-language-server and prettier via npm
+    #   npm:
+    #     name: "{{ item }}"
+    #     global: yes
+    #   loop:
+    #     - yaml-language-server
+    #     - prettier
 
     #    - name: Install iTerm2
     #      community.general.homebrew_cask:
