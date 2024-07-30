@@ -12,10 +12,10 @@
       register: homebrew_installed
 
     - name: Install Homebrew if not installed
-      shell: "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+      shell: '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
       args:
         chdir: /tmp
-      when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists 
+      when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists
       ignore_errors: yes
 
     - name: Update Homebrew
@@ -28,7 +28,7 @@
       ansible.builtin.debug:
         var: homebrew_update_result
       when: homebrew_installed.stat.exists
-    
+
     - name: Check if .zshrc exists
       stat:
         path: "{{ ansible_env.HOME }}/.zshrc"
@@ -44,7 +44,7 @@
       ansible.builtin.copy:
         src: "files/.gitconfig"
         dest: "{{ ansible_env.HOME }}/.gitconfig"
-      tags: 
+      tags:
         - gitconfig
 
     - name: Start Docker daemon on macOS
@@ -60,20 +60,33 @@
 
     # connect and query various databases, including SQL Server
     #  Azure SQL Database, PostgreSQL, MySQL and more.
-    - name: Install Azure Data Studio (--cask) 
+    - name: Install Azure Data Studio (--cask)
       community.general.homebrew_cask:
         name: azure-data-studio
         state: present
 
-    - name: Install Rectangle App (--cask) 
+    - name: Install Rectangle App (--cask)
       community.general.homebrew_cask:
         name: rectangle
         state: present
 
-#    - name: Install iTerm2 
-#      community.general.homebrew_cask:
-#        name: iterm2
-#        state: present
+    - name: Install JetBrains Mono Font (--cask)
+      community.general.homebrew_cask:
+        name: font-jetbrains-mono
+        state: present
+
+    - name: Install yaml-language-server and prettier via npm
+      npm:
+        name: "{{ item }}"
+        global: yes
+      loop:
+        - yaml-language-server
+        - prettier
+
+    #    - name: Install iTerm2
+    #      community.general.homebrew_cask:
+    #        name: iterm2
+    #        state: present
 
     - name: Install Homebrew packages
       community.general.homebrew:
@@ -83,7 +96,7 @@
       #when: homebrew_installed.stat.exists # THIS CONDITION WILL CAUSE TO SKIP!
       ignore_errors: yes
       tags:
-        - packages 
+        - packages
     - name: Download Go package
       get_url:
         url: "{{ golang_url }}"
@@ -96,7 +109,6 @@
         creates: "/usr/local/go/bin/go"
       ignore_errors: yes
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
-
 
     - name: Download and extract kubecolor binary
       ansible.builtin.get_url:
@@ -113,13 +125,13 @@
     - name: Add execute permissions to kubecolor binary
       ansible.builtin.file:
         path: "{{ install_dir }}/kubecolor"
-        mode: '+x'
+        mode: "+x"
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
 
     - name: Add Go binaries to PATH
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshrc"
-        line: 'export PATH=$PATH:/usr/local/go/bin'
+        line: "export PATH=$PATH:/usr/local/go/bin"
       when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
     - name: Create ~/.zshrc if it doesn't exist
@@ -136,10 +148,10 @@
     - name: Add kubectl alias to zsh profile
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshrc"
-        line: 'alias k=kubectl'
+        line: "alias k=kubectl"
       when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
-    # AUTOCOMPLETE ZSH 
+    # AUTOCOMPLETE ZSH
     - name: Create kubectl-autocomplete plugin directory
       ansible.builtin.file:
         path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/kubectl-autocomplete/"
@@ -149,11 +161,11 @@
     - name: Install kubectl-autocomplete plugin
       ansible.builtin.shell: "kubectl completion zsh > {{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/kubectl-autocomplete/kubectl-autocomplete.plugin.zsh"
       when: ansible_os_family == "Darwin" and homebrew_installed.stat.exists
-   
+
     - name: Add kubectl-autocomplete plugin to zshrc
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshrc"
-        line: 'plugins=(kubectl-autocomplete)'
+        line: "plugins=(kubectl-autocomplete)"
       when: ansible_os_family == "Darwin" # and homebrew_installed.stat.exists
 
     - name: Debug Info
@@ -162,5 +174,3 @@
 
     - name: Reload zsh profile
       ansible.builtin.shell: "source ~/.zshrc"
-    
-    

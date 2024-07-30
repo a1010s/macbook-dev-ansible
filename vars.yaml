@@ -27,7 +27,16 @@ brew_packages:
   - neovim 
   - picocom # uart connection tool
   - pwgen
+  - node   # npm needed for other installs via node package manager
 golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
+#TEST: brew install go
+
+
+#TODO: Add the formatters to installation via npm:
+# npm install -g yamlfmt
+# npm install -g prettier 
+# go install github.com/guodong/cli-yamlfix@latest
+
 
 
 # NOTE: Check the right version for your CPU Architecture!
