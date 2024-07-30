@@ -74,11 +74,21 @@
       community.general.homebrew_cask:
         name: font-jetbrains-mono
         state: present
-    
-    - name: Install Node.js via Homebrew
-      community.general.homebrew:
-        name: node
-        state: present
+
+    - name: Install Oh My Zsh
+      shell: |
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      args:
+        chdir: "{{ ansible_env.HOME }}"
+      become: yes
+      become_user: "{{ ansible_env.USER }}"
+      when: ansible_os_family == "Darwin" and not homebrew_installed.stat.exists
+      ignore_errors: yes
+
+    # - name: Install Node.js via Homebrew
+    #   community.general.homebrew:
+    #     name: node
+    #     state: present
 
     # - name: Install yaml-language-server and prettier via npm
     #   npm:

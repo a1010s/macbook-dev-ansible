@@ -18,28 +18,26 @@ brew_packages:
   - fzf # cmdline finder tool
   - lens
   - drawio
-  - figlet  # generate ASCII pictures: figlet AS DevOps.  Fonts: figlet -I2
+  - figlet # generate ASCII pictures: figlet AS DevOps.  Fonts: figlet -I2
   - lolcat # colorful output: figlet -f slant ANDREI STEGARU | lolcat
-  - obsidian    # best documentation tool. ADD the nvim obsidian plugin for neovim!
+  - obsidian # best documentation tool. ADD the nvim obsidian plugin for neovim!
   - trivy
   - diff-so-fancy
-  - ripgrep    # also needed for neovim find_grep functionality 
-  - neovim 
+  - ripgrep # also needed for neovim find_grep functionality
+  - neovim
   - picocom # uart connection tool
   - pwgen
-  - node   # npm needed for other installs via node package manager
-  - yaml-language-server 
-  - prettier 
+  - node # npm needed for other installs via node package manager
+  - yaml-language-server
+  - prettier
+  - golang
 golang_url: https://go.dev/dl/go1.22.2.darwin-amd64.pkg
 #TEST: brew install go
 
-
 #TODO: Add the formatters to installation via npm:
 # npm install -g yamlfmt
-# npm install -g prettier 
+# npm install -g prettier
 # go install github.com/guodong/cli-yamlfix@latest
-
-
 
 # NOTE: Check the right version for your CPU Architecture!
 kubecolor_url: https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Darwin_x86_64.tar.gz

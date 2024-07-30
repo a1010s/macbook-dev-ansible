@@ -1,5 +1,6 @@
 # DevOps Macbook Machine
-* This playbook installs most of the tools needed for DevOps and configure your Macbook accordingly.
+
+- This playbook installs most of the tools needed for DevOps and configure your Macbook accordingly.
 
 `Work in progress: need to install more tools`
 
@@ -23,5 +24,7 @@ ansible 2.10.8
   config file = None
   configured module search path = ['/Users/dbove/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
 ```
+
 ### Check the ownership of ~/.ansible directory:
+
 `ls -l ~/.ansible` => adjust to your user if needed. (ansible should run WITHOUT sudo)
