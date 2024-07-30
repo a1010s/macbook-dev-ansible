@@ -74,6 +74,11 @@
       community.general.homebrew_cask:
         name: font-jetbrains-mono
         state: present
+    
+    - name: Install Node.js via Homebrew
+      community.general.homebrew:
+        name: node
+        state: present
 
     - name: Install yaml-language-server and prettier via npm
       npm:
