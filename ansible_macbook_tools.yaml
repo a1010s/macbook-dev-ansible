@@ -189,3 +189,88 @@
 
     - name: Reload zsh profile
       ansible.builtin.shell: "source ~/.zshrc"
+
+    - name: Install GNU tar
+      community.general.homebrew:
+        name: gnu-tar
+        state: present
+      when: ansible_os_family == "Darwin"
+      tags:
+        - krew
+
+    - name: Download krew
+      ansible.builtin.get_url:
+        url: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-darwin_amd64.tar.gz
+        dest: /tmp/krew.tar.gz
+      when: ansible_os_family == "Darwin"
+      tags: 
+        - krew
+
+    - name: Create krew directory
+      ansible.builtin.file:
+        path: /tmp/krew
+        state: directory
+      when: ansible_os_family == "Darwin"
+      tags: 
+        - krew
+
+    - name: Extract krew
+      ansible.builtin.shell:
+        cmd: gtar xzf /tmp/krew.tar.gz -C /tmp/krew
+      when: ansible_os_family == "Darwin"
+      tags: 
+        - krew
+
+    - name: Install krew
+      ansible.builtin.command:
+        cmd: /tmp/krew/krew-darwin_amd64 install krew
+      when: ansible_os_family == "Darwin"
+      ignore_errors: yes
+      tags: 
+        - krew
+
+    - name: Add krew to PATH in zshrc
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"'
+      when: ansible_os_family == "Darwin"
+      tags: 
+        - krew
+
+    - name: Source zshrc to update PATH
+      ansible.builtin.shell: 
+        cmd: "source {{ ansible_env.HOME }}/.zshrc && echo $PATH"
+      args:
+        executable: /bin/zsh
+      register: source_result
+      when: ansible_os_family == "Darwin"
+      tags:
+        - krew
+
+    - name: Install krew plugins
+      ansible.builtin.shell:
+        cmd: "source {{ ansible_env.HOME }}/.zshrc && kubectl krew install {{ item }}"
+      args:
+        executable: /bin/zsh
+      loop:
+        - rbac-lookup
+        - ctx
+        - ns
+        - neat
+        - access-matrix
+        - whoami
+      when: ansible_os_family == "Darwin"
+      ignore_errors: yes
+      tags: 
+        - krew
+
+    - name: Cleanup krew installation files
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /tmp/krew.tar.gz
+        - /tmp/krew
+      when: ansible_os_family == "Darwin"
+      tags:
+        - krew
