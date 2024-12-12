@@ -5,7 +5,8 @@ brew_packages:
   - wget
   - btop
   - kubectl
-  - kubectx
+  - kubectx # kubectx and kubens (https://github.com/ahmetb/kubectx)
+  - kubecolor
   - k9s
   - iperf
   - jq
