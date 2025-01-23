@@ -2,6 +2,7 @@
 
 brew_packages:
   - azure-cli
+  - tmux
   - wget
   - btop
   - kubectl
